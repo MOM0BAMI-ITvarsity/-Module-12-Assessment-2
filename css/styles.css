@@ -7,7 +7,7 @@
 
 /* General Body Styles */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Arial', 'Helvetica', sans-serif;
     background-color: #f4f7fc;
     color: #333;
     padding-top: 20px;
@@ -35,6 +35,7 @@ table {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
 }
 
 th, td {
@@ -51,6 +52,7 @@ th {
 tr:hover {
     background-color: #f1f1f1;
     cursor: pointer;
+    border-left: 2px solid #007bff;
 }
 
 /* Form Styling */
@@ -116,8 +118,21 @@ button:hover {
     background-color: #218838;
 }
 
+button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+button:active {
+    background-color: #218838;
+    transform: translateY(1px);
+}
+
 /* Avatar Styles */
 #avatarImage img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover; /* Ensures the image doesn't get stretched */
     border-radius: 50%;
     margin-bottom: 20px;
     border: 2px solid #ddd;
@@ -144,13 +159,12 @@ button:hover {
 
 /* Custom Scrollbar for Tables */
 table::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 10px;
 }
 
 table::-webkit-scrollbar-thumb {
     background-color: #007bff;
-    border-radius: 4px;
+    border-radius: 5px;
 }
 
 table::-webkit-scrollbar-track {
@@ -200,4 +214,10 @@ footer a {
 
 footer a:hover {
     text-decoration: underline;
+}
+
+/* Custom Theme for Dark Mode */
+body.dark-theme {
+    background-color: #121212;
+    color: #ffffff;
 }

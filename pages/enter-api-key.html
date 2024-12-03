@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enter API Key</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="bg-light d-flex align-items-center" style="height: 100vh;">
+<body class="bg-light d-flex align-items-center justify-content-center" style="height: 100vh;">
 
     <div class="container text-center">
         <!-- API Key Form -->
@@ -21,7 +21,7 @@
                     <div class="mb-3">
                         <input type="text" id="apiKey" name="apiKey" class="form-control" placeholder="Enter API Key" required>
                     </div>
-                    <button id="submitApiKey" class="btn btn-primary w-100">Submit</button>
+                    <button type="submit" id="submitApiKey" class="btn btn-primary w-100">Submit</button>
                 </form>
             </div>
         </div>
@@ -33,11 +33,11 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="../js/jquery-3.4.1.min.js"></script>
-    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/config.js"></script>
     <script>
-        let rootPath = "https://mysite.itvarsity.org/api/ContactBook/";
-        document.getElementById("submitApiKey").addEventListener('click', setApiKey);
+        document.getElementById("apiKeyForm").addEventListener('submit', setApiKey);
 
         function setApiKey(e) {
             e.preventDefault();

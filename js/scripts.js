@@ -16,7 +16,7 @@ function toggleVisibility(elementId) {
 }
 
 // Example of dynamic table sorting (optional)
-function sortTable(tableId, columnIndex) {
+function sortTable(tableId, columnIndex, isNumeric = false) {
     const table = document.getElementById(tableId);
     const rows = Array.from(table.rows);
     const headerRow = rows.shift(); // Remove the header row temporarily
@@ -26,8 +26,11 @@ function sortTable(tableId, columnIndex) {
         const cellA = rowA.cells[columnIndex].textContent.trim();
         const cellB = rowB.cells[columnIndex].textContent.trim();
 
-        // Compare based on the content of the cells (numerical or string comparison)
-        return cellA.localeCompare(cellB);
+        // Compare based on the content of the cells
+        if (isNumeric) {
+            return parseFloat(cellA) - parseFloat(cellB); // Numeric comparison
+        }
+        return cellA.localeCompare(cellB); // String comparison
     });
 
     // Reorder the rows in the table
@@ -42,9 +45,12 @@ function loadUserProfile() {
     const userProfile = localStorage.getItem('userProfile');
     if (userProfile) {
         const profile = JSON.parse(userProfile);
-        document.getElementById('profileName').textContent = profile.name;
-        document.getElementById('profileEmail').textContent = profile.email;
-        // You can also set a profile image or other user-specific info
+        const profileName = document.getElementById('profileName');
+        const profileEmail = document.getElementById('profileEmail');
+
+        if (profileName) profileName.textContent = profile.name;
+        if (profileEmail) profileEmail.textContent = profile.email;
+        // Set a profile image or other user-specific info if applicable
     }
 }
 
@@ -57,24 +63,28 @@ function handleError(errorMessage) {
 // Example of a smooth scroll function (for navigation)
 function smoothScrollTo(elementId) {
     const element = document.getElementById(elementId);
-    window.scrollTo({
-        top: element.offsetTop,
-        behavior: 'smooth'
-    });
+    if (element) {
+        window.scrollTo({
+            top: element.offsetTop,
+            behavior: 'smooth'
+        });
+    }
 }
 
 // Example of an input field auto-format (optional, like phone number formatting)
 function formatPhoneNumber(phoneInputId) {
     const phoneInput = document.getElementById(phoneInputId);
-    phoneInput.addEventListener('input', function(e) {
-        let formattedValue = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-        if (formattedValue.length > 3 && formattedValue.length <= 6) {
-            formattedValue = `${formattedValue.slice(0, 3)}-${formattedValue.slice(3)}`;
-        } else if (formattedValue.length > 6) {
-            formattedValue = `${formattedValue.slice(0, 3)}-${formattedValue.slice(3, 6)}-${formattedValue.slice(6, 10)}`;
-        }
-        phoneInput.value = formattedValue;
-    });
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+            let formattedValue = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+            if (formattedValue.length > 3 && formattedValue.length <= 6) {
+                formattedValue = `${formattedValue.slice(0, 3)}-${formattedValue.slice(3)}`;
+            } else if (formattedValue.length > 6) {
+                formattedValue = `${formattedValue.slice(0, 3)}-${formattedValue.slice(3, 6)}-${formattedValue.slice(6, 10)}`;
+            }
+            phoneInput.value = formattedValue;
+        });
+    }
 }
 
 // Example of a confirmation prompt for form submissions or deletions
@@ -93,19 +103,21 @@ function sortContactsByFirstName() {
 // Example: Load contacts and render them dynamically
 function renderContactsTable(data) {
     const tableBody = document.getElementById('contactTableBody');
-    tableBody.innerHTML = ''; // Clear existing table content
+    if (tableBody) {
+        tableBody.innerHTML = ''; // Clear existing table content
 
-    data.forEach(contact => {
-        const row = document.createElement('tr');
-        row.addEventListener('click', () => editContact(contact.id));
+        data.forEach(contact => {
+            const row = document.createElement('tr');
+            row.addEventListener('click', () => editContact(contact.id));
 
-        row.innerHTML = `
-            <td><img src="${rootPath}controller/uploads/${contact.avatar}" width="40" alt="Avatar"></td>
-            <td><h5>${contact.firstname}</h5></td>
-            <td><h5>${contact.lastname}</h5></td>
-        `;
-        tableBody.appendChild(row);
-    });
+            row.innerHTML = `
+                <td><img src="${rootPath}controller/uploads/${contact.avatar}" width="40" alt="Avatar"></td>
+                <td><h5>${contact.firstname}</h5></td>
+                <td><h5>${contact.lastname}</h5></td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
 }
 
 // Example of editing a contact (triggered when clicking on a table row)
@@ -113,4 +125,10 @@ function editContact(contactId) {
     window.open(`edit-contact.html?id=${contactId}`, '_self');
 }
 
-// More specific DOM manipulations can go here...
+// Example of handling a form submission
+function handleFormSubmission(formId, submitCallback) {
+    const form = document.getElementById(formId);
+    if (form && validateContactForm(formId)) {
+        submitCallback(form);
+    }
+}

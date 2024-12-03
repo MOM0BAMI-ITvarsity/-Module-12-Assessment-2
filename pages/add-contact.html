@@ -17,7 +17,7 @@
                 <h1 class="h4 mb-4 text-center">Add Contact</h1>
 
                 <!-- Add Contact Form -->
-                <form id="addForm" class="needs-validation">
+                <form id="addForm" class="needs-validation" novalidate>
                     <div class="mb-3">
                         <label for="firstname" class="form-label">First Name</label>
                         <input type="text" id="firstname" name="firstname" class="form-control" required>
@@ -53,7 +53,7 @@
     <script src="../js/config.js"></script>
     <script>
         // Add event listeners
-        document.getElementById("submitForm").addEventListener('click', submitForm);
+        document.getElementById("addForm").addEventListener('submit', submitForm); // Use form submit event
         document.getElementById("homeLink").addEventListener('click', homeLink);
 
         function submitForm(e) {
@@ -74,6 +74,10 @@
                 } else {
                     alert("Failed to add contact: " + data);
                 }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while adding the contact.");
             });
         }
 

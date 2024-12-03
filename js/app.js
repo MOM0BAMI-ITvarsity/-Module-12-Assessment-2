@@ -3,14 +3,12 @@
  * Main application script for Contact Book Plus.
  */
 
-// Ensure the API key is valid before proceeding
-const apiKey = getApiKey(); // Reuses the function from config.js
-
-/**
- * Initialize global event listeners and shared functionalities.
- */
+// Ensure the API key is valid before proceeding after the DOM is ready
 document.addEventListener("DOMContentLoaded", function () {
     console.log("App initialized!");
+
+    // Ensure API key is fetched after the DOM is fully loaded
+    const apiKey = getApiKey(); // Reuses the function from config.js
 
     // Attach event listener for logout
     const logoutButton = document.getElementById("logout");
@@ -41,10 +39,9 @@ function loadAppTheme() {
     const savedTheme = localStorage.getItem("theme") || "default";
     document.body.classList.add(savedTheme);
 
-    // Example: Apply dark mode
+    // Example: Apply dark mode styles via CSS classes
     if (savedTheme === "dark") {
-        document.body.style.backgroundColor = "#121212";
-        document.body.style.color = "#ffffff";
+        document.body.classList.add("dark-theme"); // Assume 'dark-theme' is defined in your CSS
     }
 }
 
@@ -55,12 +52,15 @@ function loadAppTheme() {
 function toggleLoadingSpinner(show) {
     let spinner = document.getElementById("loadingSpinner");
 
-    if (!spinner) {
+    if (!spinner && show) {
+        // Only create and append if it doesn't exist and we need to show it
         spinner = document.createElement("div");
         spinner.id = "loadingSpinner";
         spinner.innerHTML = '<div class="spinner-border text-primary" role="status"></div>';
         document.body.appendChild(spinner);
     }
 
-    spinner.style.display = show ? "block" : "none";
+    if (spinner) {
+        spinner.style.display = show ? "block" : "none";
+    }
 }

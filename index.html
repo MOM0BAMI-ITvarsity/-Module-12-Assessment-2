@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Book Plus</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body onload="fetchContacts()" class="bg-light">
 
@@ -40,28 +40,35 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="../js/jquery-3.4.1.min.js"></script>
-    <script src="../js/bootstrap.bundle.min.js"></script>
-    <script src="../js/config.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/config.js"></script>
     <script>
+        // Add event listeners for buttons
         document.getElementById("refresh").addEventListener('click', fetchContacts);
         document.getElementById("addContact").addEventListener('click', addContact);
 
+        // Fetch contacts from API
         function fetchContacts() {
             fetch(rootPath + "controller/get-contacts/")
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (data) {
-                    displayOutput(data);
-                })
-                .catch(function (error) {
+                .then(response => response.json())
+                .then(data => displayOutput(data))
+                .catch(error => {
                     document.getElementById("table").innerHTML = "<p class='text-danger'>Error loading contacts. Please try again.</p>";
                 });
         }
 
+        // Display the contact list in a table
         function displayOutput(data) {
-            let output = `
+            const tableBody = data.map(contact => `
+                <tr onclick="editContact(${contact.id})" style="cursor: pointer;">
+                    <td><img src="${rootPath}controller/uploads/${contact.avatar}" alt="Avatar" class="rounded-circle" width="40"></td>
+                    <td>${contact.firstname}</td>
+                    <td>${contact.lastname}</td>
+                </tr>
+            `).join('');
+            
+            const table = `
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
@@ -71,29 +78,21 @@
                         </tr>
                     </thead>
                     <tbody>
-            `;
-            for (let contact of data) {
-                output += `
-                    <tr onclick="editContact(${contact.id})" style="cursor: pointer;">
-                        <td><img src="${rootPath}controller/uploads/${contact.avatar}" alt="Avatar" class="rounded-circle" width="40"></td>
-                        <td>${contact.firstname}</td>
-                        <td>${contact.lastname}</td>
-                    </tr>
-                `;
-            }
-            output += `
+                        ${tableBody}
                     </tbody>
                 </table>
             `;
-            document.getElementById("table").innerHTML = output;
+            document.getElementById("table").innerHTML = table;
         }
 
+        // Redirect to add contact page
         function addContact() {
-            window.open("add-contact.html", "_self");
+            window.location.href = "pages/add-contact.html";
         }
 
+        // Redirect to edit contact page
         function editContact(id) {
-            window.open("edit-contact.html?id=" + id, "_self");
+            window.location.href = `pages/edit-contact.html?id=${id}`;
         }
     </script>
 </body>
