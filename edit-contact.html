@@ -2,7 +2,7 @@
     <head>
         <meta charset="UTF-8">
         <title></title>
-        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="style.css">
     </head>
     <body onload="getContact()">
         <br/>
@@ -58,9 +58,9 @@
             }
             
             function displayOutput(data){
-                avatarImg =
+                avatarImg =`
                     <img src="${rootPath}/controller/uploads/${data[0].avatar}" width="200" />
-                
+                `
                 document.getElementById("avatarImage").innerHTML = avatarImg;
                 document.getElementById("firstname").value = data[0].firstname;
                 document.getElementById("lastname").value = data[0].lastname;
